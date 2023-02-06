@@ -1,1 +1,1 @@
-FROM kbuley/rustdevcontainer
+FROM kbuley/rustdevcontainer:alpine

@@ -6,7 +6,7 @@ services:
     volumes:
       - ../:/workspace
       # Docker
-      - ~/.docker:~/.docker
+      - ~/.docker:/home/vscode/.docker:z
       # Docker socket to access Docker server
       - /var/run/docker.sock:/var/run/docker.sock
       # SSH directory for Linux, OSX and WSL
@@ -15,11 +15,11 @@ services:
       # from /mnt/ssh to ~/.ssh to fix permissions.
       - ~/.ssh:/mnt/ssh
       # Shell history persistence
-      - ~/.zsh_history:~/.zsh_history
+      - ~/.zsh_history:/home/vscode/.zsh_history:z
       # Git config
-      - ~/.gitconfig:~/.gitconfig
+      - ~/.gitconfig:/home/vscode/.gitconfig:z
       # Kubernetes
-      # - ~/.kube:~/.kube
+      - ~/.kube:/home/vscode/.kube:z
     environment:
       - TZ=
     # Needed for debugging
