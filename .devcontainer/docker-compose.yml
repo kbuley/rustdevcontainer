@@ -6,7 +6,7 @@ services:
     volumes:
       - ../:/workspace
       # Docker
-      - ~/.docker:/root/.docker
+      - ~/.docker:~/.docker
       # Docker socket to access Docker server
       - /var/run/docker.sock:/var/run/docker.sock
       # SSH directory for Linux, OSX and WSL
@@ -15,11 +15,11 @@ services:
       # from /mnt/ssh to ~/.ssh to fix permissions.
       - ~/.ssh:/mnt/ssh
       # Shell history persistence
-      - ~/.zsh_history:/root/.zsh_history
+      - ~/.zsh_history:~/.zsh_history
       # Git config
-      - ~/.gitconfig:/root/.gitconfig
+      - ~/.gitconfig:~/.gitconfig
       # Kubernetes
-      # - ~/.kube:/root/.kube
+      # - ~/.kube:~/.kube
     environment:
       - TZ=
     # Needed for debugging

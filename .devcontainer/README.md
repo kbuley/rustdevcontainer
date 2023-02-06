@@ -32,7 +32,7 @@ It works on Linux, Windows and OSX.
 You can make changes to the [Dockerfile](Dockerfile) and then rebuild the image. For example, your Dockerfile could be:
 
 ```Dockerfile
-FROM qmcgaw/rustdevcontainer
+FROM kbuley/rustdevcontainer
 RUN apk add curl
 ```
 
@@ -47,7 +47,7 @@ You can customize **settings** and **extensions** in the [devcontainer.json](dev
 
 ### Entrypoint script
 
-You can bind mount a shell script to `/root/.welcome.sh` to replace the [current welcome script](shell/.welcome.sh).
+You can bind mount a shell script to `~/.welcome.sh` to replace the [current welcome script](shell/.welcome.sh).
 
 ### Publish a port
 
