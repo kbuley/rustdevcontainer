@@ -1,30 +1,31 @@
-ARG BASEDEV_VERSION=v0.20.1
+ARG BASEDEV_VERSION=v0.20.7
 ARG KUBECTL_VERSION=v1.26.0
 ARG STERN_VERSION=v1.22.0
 ARG KUBECTX_VERSION=v0.9.4
 ARG KUBENS_VERSION=v0.9.4
 ARG HELM_VERSION=v3.10.3
 
-FROM qmcgaw/binpot:kubectl-${KUBECTL_VERSION} AS kubectl
-FROM qmcgaw/binpot:stern-${STERN_VERSION} AS stern
-FROM qmcgaw/binpot:kubectx-${KUBECTX_VERSION} AS kubectx
-FROM qmcgaw/binpot:kubens-${KUBENS_VERSION} AS kubens
-FROM qmcgaw/binpot:helm-${HELM_VERSION} AS helm
+FROM kbuley/binpot:kubectl-${KUBECTL_VERSION} AS kubectl
+FROM kbuley/binpot:stern-${STERN_VERSION} AS stern
+FROM kbuley/binpot:kubectx-${KUBECTX_VERSION} AS kubectx
+FROM kbuley/binpot:kubens-${KUBENS_VERSION} AS kubens
+FROM kbuley/binpot:helm-${HELM_VERSION} AS helm
 
-FROM qmcgaw/basedevcontainer:${BASEDEV_VERSION}-debian
+FROM kbuley/basedevcontainer:${BASEDEV_VERSION}-debian
 ARG CREATED
 ARG COMMIT
 ARG VERSION=local
 LABEL \
-    org.opencontainers.image.authors="quentin.mcgaw@gmail.com" \
+    org.opencontainers.image.authors="kevin@buley.org" \
     org.opencontainers.image.created=$CREATED \
     org.opencontainers.image.version=$VERSION \
     org.opencontainers.image.revision=$COMMIT \
-    org.opencontainers.image.url="https://github.com/qdm12/rustdevcontainer" \
-    org.opencontainers.image.documentation="https://github.com/qdm12/rustdevcontainer" \
-    org.opencontainers.image.source="https://github.com/qdm12/rustdevcontainer" \
+    org.opencontainers.image.url="https://github.com/kbuley/rustdevcontainer" \
+    org.opencontainers.image.documentation="https://github.com/kbuley/rustdevcontainer" \
+    org.opencontainers.image.source="https://github.com/kbuley/rustdevcontainer" \
     org.opencontainers.image.title="Rust Debian Dev container" \
     org.opencontainers.image.description="Rust development container for Visual Studio Code Remote Containers development"
+USER root
 WORKDIR /workspace
 
 # Install Rust for the correct CPU architecture
@@ -62,13 +63,14 @@ RUN wget -qO- "https://github.com/rust-analyzer/rust-analyzer/releases/download/
     chmod 500 /usr/local/bin/rust-analyzer
 RUN rustup component add clippy rustfmt
 
-# Shell setup
-COPY shell/.zshrc-specific shell/.welcome.sh /root/
-RUN mkdir ~/.zfunc && rustup completions zsh > ~/.zfunc/_rustup
-
 # Extra binary tools
-COPY --from=kubectl /bin /usr/local/bin/kubectl
-COPY --from=stern /bin /usr/local/bin/stern
-COPY --from=kubectx /bin /usr/local/bin/kubectx
-COPY --from=kubectx /bin /usr/local/bin/kubens
-COPY --from=helm /bin /usr/local/bin/helm
+COPY --from=kubectl --chmod=555 /bin /usr/local/bin/kubectl
+COPY --from=stern --chmod=555 /bin /usr/local/bin/stern
+COPY --from=kubectx --chmod=555 /bin /usr/local/bin/kubectx
+COPY --from=kubectx --chmod=555 /bin /usr/local/bin/kubens
+COPY --from=helm --chmod=555 /bin /usr/local/bin/helm
+
+# Shell setup
+USER ${BASE_USERNAME}
+COPY shell/.zshrc-specific shell/.welcome.sh ~/
+RUN mkdir ~/.zfunc && rustup completions zsh > ~/.zfunc/_rustup
