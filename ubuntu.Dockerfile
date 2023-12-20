@@ -1,6 +1,6 @@
 ARG BASEDEV_VERSION=v0.20.9
 
-FROM kbuley/basedevcontainer:${BASEDEV_VERSION}-debian
+FROM kbuley/basedevcontainer:${BASEDEV_VERSION}-ubuntu
 ARG CREATED
 ARG COMMIT
 ARG VERSION=local
@@ -12,7 +12,7 @@ LABEL \
   org.opencontainers.image.url="https://github.com/kbuley/rustdevcontainer" \
   org.opencontainers.image.documentation="https://github.com/kbuley/rustdevcontainer" \
   org.opencontainers.image.source="https://github.com/kbuley/rustdevcontainer" \
-  org.opencontainers.image.title="Rust Debian Dev container" \
+  org.opencontainers.image.title="Rust Ubuntu Dev container" \
   org.opencontainers.image.description="Rust development container for Visual Studio Code Remote Containers development"
 USER root
 WORKDIR /workspace
@@ -41,7 +41,7 @@ RUN arch="$(uname -m)" && \
 # - gcc, libc6-dev required by Rust
 # - musl-tools required for static binaries
 # hadolint ignore=DL3008
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN export UBUNTU_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get -y install --no-install-recommends gcc libc6-dev musl-tools && \
   apt-get clean && \
