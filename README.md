@@ -6,6 +6,7 @@ Rust development container for Visual Studio Code
 
 [![Alpine](https://github.com/kbuley/rustdevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/kbuley/rustdevcontainer/actions/workflows/alpine.yml)
 [![Debian](https://github.com/kbuley/rustdevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/kbuley/rustdevcontainer/actions/workflows/debian.yml)
+[![Ubuntu](https://github.com/kbuley/rustdevcontainer/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/kbuley/rustdevcontainer/actions/workflows/ubuntu.yml)
 
 [![dockeri.co](https://dockeri.co/image/kbuley/rustdevcontainer)](https://hub.docker.com/r/kbuley/rustdevcontainer)
 
@@ -31,29 +32,34 @@ Rust development container for Visual Studio Code
 
 ## Features
 
-- Rust 1.66.0
-- Rust Analyzer 2023-01-02
+- Rust 1.74.1
+- Rust Analyzer 2023-12-18
 - Clippy
 - Rustfmt
 - Alpine based with Docker tags `:latest` and `:alpine`
-  - 1.16GB amd64 uncompressed image size
+  - 1.62GB amd64 uncompressed image size
   - Compatible with `amd64`
   - Based on [kbuley/basedevcontainer:alpine](https://github.com/kbuley/basedevcontainer)
-    - Based on Alpine 3.16
+    - Based on Alpine 3.19
     - Minimal custom terminal and packages
     - See more [features](https://github.com/kbuley/basedevcontainer#features)
 - Debian based with Docker tag `:debian` (1.51GB, based on [kbuley/basedevcontainer:debian](https://github.com/kbuley/basedevcontainer))
-  - 1.21GB amd64 uncompressed image size
+  - 1.69GB amd64 uncompressed image size
   - Compatible with `amd64` and `arm64`
   - Based on [kbuley/basedevcontainer:debian](https://github.com/kbuley/basedevcontainer)
     - Based on Debian Buster slim
     - Minimal custom terminal and packages
     - See more [features](https://github.com/kbuley/basedevcontainer#features)
+- Ubuntu based with Docker tag `:ubuntu` (1.51GB, based on [kbuley/basedevcontainer:ubuntu](https://github.com/kbuley/basedevcontainer))
+  - 1.63GB amd64 uncompressed image size
+  - Compatible with `amd64` and `arm64`
+  - Based on [kbuley/basedevcontainer:ubuntu](https://github.com/kbuley/basedevcontainer)
+    - Based on Ubuntu LTS
+    - Minimal custom terminal and packages
 - Cross platform
-  - Easily bind mount your SSH keys to use with **git**
-  - Manage your host Docker from within the dev container, more details at [kbuley/basedevcontainer](https://github.com/kbuley/basedevcontainer#features)
+- Easily bind mount your SSH keys to use with **git**
+- Manage your host Docker from within the dev container, more details at [kbuley/basedevcontainer](https://github.com/kbuley/basedevcontainer#features)
 - Extensible with docker-compose.yml
-- Comes with extra binary tools for a few extra MBs: `kubectl`, `kubectx`, `kubens`, `stern` and `helm`
 
 ## Requirements
 
@@ -62,15 +68,18 @@ See [.devcontainer/README.md#Requirements](.devcontainer/README.md#Requirements)
 ## Setup for a project
 
 1. Setup your configuration files
-    - With style 💯
 
-        ```sh
-        docker run -it --rm -v "/yourrepopath:/repository" kbuley/devtainr:v0.2.0 -dev rust -path /repository -name projectname
-        ```
+   - With style 💯
 
-        Or use the [built binary](https://github.com/kbuley/devtainr#binary)
-    - Or manually: download this repository and put the [.devcontainer](.devcontainer) directory in your project.
-1. If you have a *.vscode/settings.json*, eventually move the settings to *.devcontainer/devcontainer.json* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
+     ```sh
+     docker run -it --rm -v "/yourrepopath:/repository" kbuley/devtainr:v0.2.0 -dev rust -path /repository -name projectname
+     ```
+
+     Or use the [built binary](https://github.com/kbuley/devtainr#binary)
+
+   - Or manually: download this repository and put the [.devcontainer](.devcontainer) directory in your project.
+
+1. If you have a _.vscode/settings.json_, eventually move the settings to _.devcontainer/devcontainer.json_ in the `"settings"` section as _.vscode/settings.json_ take precedence over the settings defined in _.devcontainer/devcontainer.json_.
 1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Remote-Containers: Open Folder in Container...` and choose your project directory
 1. See [.devcontainer/README.md#Setup](.devcontainer/README.md#Setup)
 
