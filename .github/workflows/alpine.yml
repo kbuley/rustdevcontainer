@@ -1,4 +1,5 @@
 name: Alpine
+
 on:
   push:
     paths:
@@ -19,25 +20,32 @@ jobs:
     env:
       DOCKER_BUILDKIT: "1"
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v4.1.1
 
       - name: Build image
-        run: docker build -f alpine.Dockerfile .
+        run: docker build -f alpine.Dockerfile -t kbuley/godevcontainer .
 
   publish:
     needs: [verify]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v4.1.1
 
-      - uses: docker/setup-qemu-action@v2.1.0
-      - uses: docker/setup-buildx-action@v2.4.0
+      - uses: docker/setup-qemu-action@v3
 
-      - uses: docker/login-action@v2.1.0
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
         with:
           username: kbuley
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - uses: docker/login-action@v3
+        with:
+          registry: quay.io
+          username: kbuley+github
+          password: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Set variables
         id: vars
@@ -46,7 +54,6 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/}
           echo "commit=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           echo "created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
-
           if [ "$TAG" != "$GITHUB_REF" ]; then
             echo "version=$TAG" >> $GITHUB_OUTPUT
             echo "alpine_version=$TAG-alpine" >> $GITHUB_OUTPUT
@@ -62,16 +69,17 @@ jobs:
           fi
 
       - name: Build and push final image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./alpine.Dockerfile
+          file: alpine.Dockerfile
           platforms: ${{ steps.vars.outputs.platforms }}
           build-args: |
             CREATED=${{ steps.vars.outputs.created }}
             COMMIT=${{ steps.vars.outputs.commit }}
             VERSION=${{ steps.vars.outputs.version }}
           tags: |
-            kbuley/rustdevcontainer:${{ steps.vars.outputs.version }}
-            kbuley/rustdevcontainer:${{ steps.vars.outputs.alpine_version }}
+            kbuley/godevcontainer:${{ steps.vars.outputs.version }}
+            kbuley/godevcontainer:${{ steps.vars.outputs.alpine_version }}
+            quay.io/kbuley/godevcontainer:${{ steps.vars.outputs.version }}
+            quay.io/kbuley/godevcontainer:${{ steps.vars.outputs.alpine_version }}
           push: true
