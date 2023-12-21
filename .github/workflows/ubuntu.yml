@@ -79,8 +79,8 @@ jobs:
             COMMIT=${{ steps.vars.outputs.commit }}
             VERSION=${{ steps.vars.outputs.version }}
           tags: |
-            kbuley/godevcontainer:${{ steps.vars.outputs.version }}
-            kbuley/godevcontainer:${{ steps.vars.outputs.ubuntu_version }}
-            quay.io/kbuley/godevcontainer:${{ steps.vars.outputs.version }}
-            quay.io/kbuley/godevcontainer:${{ steps.vars.outputs.ubuntu_version }}
+            kbuley/rustdevcontainer:${{ steps.vars.outputs.version }}
+            kbuley/rustdevcontainer:${{ steps.vars.outputs.ubuntu_version }}
+            quay.io/kbuley/rustdevcontainer:${{ steps.vars.outputs.version }}
+            quay.io/kbuley/rustdevcontainer:${{ steps.vars.outputs.ubuntu_version }}
           push: true
