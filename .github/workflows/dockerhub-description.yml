@@ -17,3 +17,17 @@ jobs:
           DOCKERHUB_USERNAME: kbuley
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
           DOCKERHUB_REPOSITORY: kbuley/rustdevcontainer
+  quayIODescription:
+    name: Push README to Quay.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      - name: Quay.io Description
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_APIKEY: ${{ secrets.QUAY_API_KEY }}
+        with:
+          destination_container_repo: quay.io/kbuley/rustdevcontainer
+          provider: quay
+          readme_file: "README.md"
